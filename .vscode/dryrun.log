@@ -1,0 +1,5 @@
+make: Entering directory `/Users/alex134828/Desktop/UCSD/22spring/ECE141B/assignment10-group-18'
+g++ -g -std=c++17 -Wall -pedantic   -c -o main.o main.cpp
+g++ -o pa10 main.o
+make: Leaving directory `/Users/alex134828/Desktop/UCSD/22spring/ECE141B/assignment10-group-18'
+ 
