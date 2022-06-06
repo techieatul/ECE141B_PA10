@@ -1,7 +1,7 @@
 #include "DBQuery.hpp"
 
 namespace ECE141 {
-DBQuery::DBQuery() : theEntityName(""), theAllField(false), theEntity(nullptr), theOrderBy(""), isAscending(true), theLimit(-1), theJoin(false), theCommandString("") {}
+DBQuery::DBQuery() : theEntityName(""), theAllField(false), theEntity(nullptr), theOrderBy(""), isAscending(true), theLimit(-1), theJoin(false), theCommandString(""), theGroupBy(false) {}
 
 DBQuery::DBQuery(const DBQuery &aCopy) {
     *this = aCopy;
@@ -90,6 +90,11 @@ DBQuery &DBQuery::setJoin(bool aJoin, JoinField &aJoinKey) {
     this->theJoinField = aJoinKey;
     this->theJoin = aJoin;
     return *this;
+}
+DBQuery &DBQuery::setGroupBy(bool &aGroupBy, std::string &aggrField, std::string &aFieldName){
+    this->theGroupField.theAggrFunc = aggrField;
+    this->theGroupField.theFieldName = aFieldName;
+    this->theGroupBy = aGroupBy;
 }
 
 }  // namespace ECE141

@@ -21,6 +21,7 @@ class CreateTableStatement : public SQLStatement {
 
     protected:
     SQLProcessor* theSQLProcessorPtr;
+    
 
 
 

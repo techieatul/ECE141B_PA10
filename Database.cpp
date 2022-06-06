@@ -674,4 +674,48 @@ StatusResult Database::indexsTable(IndexsTableStatement *aStmt, std::ostream &an
     return StatusResult(Errors::noError);
 }
 
+StatusResult Database::alterTable(AlterTableStatement *aStmt, std::ostream &anOutput){
+    std::string theTableName = aStmt->getTableName();
+    if (!this->checkEntityInMap(theTableName)) {
+        return StatusResult(Errors::unknownTable);
+    }
+    uint32_t theBlockNum = this->getEntityFromMap(theTableName);
+    std::string theModifyType = aStmt->getAlterFieldName();
+    Entity  *theEntity = new Entity(theTableName);
+    Block   *theDescribeBlock = new Block(BlockType::entity_block);
+    storage.readBlock(theBlockNum, *theDescribeBlock);
+    theEntity->decodeBlock(*theDescribeBlock);
+    std::vector<std::string> theUpdateNames;
+    // Perform action on the new attribute
+    if(theModifyType == "add"){
+        for(auto& attr: aStmt->getAttributevector()){
+            theEntity->addAttribute(attr);
+            theUpdateNames.push_back(attr.getName());
+        }
+        // Handle add for each Row
+        for(auto& row: theEntity->getDataRows()){
+            Block theRowBlock{BlockType::data_block};
+            storage.readBlock(row, theRowBlock);
+            Row theRow;
+            theRow.decode(theRowBlock);
+            for(auto& theField: theUpdateNames){
+                theRow.set(theField,std::string("NULL"));
+            }
+            Block theNewRowBlock{BlockType::data_block};
+            theRow.getBlock(theNewRowBlock);
+            storage.writeBlock(row, theNewRowBlock);
+        }
+    }else if(theModifyType == "drop"){
+
+    }else if(theModifyType == "alter"){
+
+    }
+
+    // Write the entity back 
+    Block theEnityBlock = theEntity->getBlock();
+    storage.writeBlock(theBlockNum, theEnityBlock);
+    anOutput << "Query Ok. 1 " << " rows affected (" << Config::getTimer().elapsed() << " sec)"
+             << "\n";
+    return StatusResult(Errors::noError);
+}
 }  // namespace ECE141

@@ -11,7 +11,7 @@
 			"request": "launch",
 			"name": "clang++ build active file",
 			"program": "${workspaceFolder}/pa10",
-			"args": ["ViewCache"],
+			"args": ["AlterTest"],
 			"externalConsole": false,
 			//"preLaunchTask": "clang++ build active file",
 			"MIMode": "lldb",

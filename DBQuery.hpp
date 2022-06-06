@@ -17,6 +17,12 @@
 using FilterKeyword = std::vector<ECE141::Keywords>;
 using FilterStruct = std::vector<ECE141::selectField>;
 namespace ECE141 {
+
+struct GroupField{
+    std::string theAggrFunc;
+    std::string theFieldName;
+
+};
 struct JoinField {
     JoinField() {}
     JoinField(Keywords aJoinKey, selectField &aLeft, selectField &aRight, std::string &aTableName) : theJoinKey(aJoinKey), theLeftField(aLeft), theRightField(aRight), theDefaultTable(aTableName) {}
@@ -71,6 +77,7 @@ class DBQuery {
     DBQuery      &setFilterStruct(const selectField &aStruct);
     DBQuery      &setKeyValue(const std::string &aKey, Value &aVal);
     DBQuery      &setJoin(bool aJoin, JoinField &aJoinKey);
+    DBQuery      &setGroupBy(bool &aGroupBy,std::string &aggrField, std::string &aFieldName);
 
    protected:
     std::string   theEntityName;
@@ -87,6 +94,8 @@ class DBQuery {
     bool          theJoin;
     JoinField     theJoinField;
     std::string   theCommandString;
+    GroupField    theGroupField;
+    bool          theGroupBy;
 };
 }  // namespace ECE141
 

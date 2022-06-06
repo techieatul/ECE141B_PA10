@@ -114,7 +114,7 @@ bool ShowsTablesView::showQuery(RawRowCollection &theRows, DBQuery &aDBQuery, st
     for (int j = 0; j < theRows.size(); j++) {
         KeyValues theData = theRows.at(j).getData();
         for (int k = 0; k < theFields.size(); k++) {
-            Value       theVal = theData[theFields.at(k)];
+            Value theVal = theData[theFields.at(k)];
             std::string theStrVal = Helpers::convertValueToStr(theVal);
             this->addToRow(theStrVal);
         }

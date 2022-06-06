@@ -41,6 +41,7 @@ int main(int argc, const char * argv[]) {
       {"Tables",      [&](){return theTests.doTablesTest();}  },
       {"Update",      [&](){return theTests.doUpdateTest();}  },
       {"ViewCache",   [&](){return theTests.doViewCacheTest();}  },
+      {"AlterTest",   [&](){return theTests.doAlterTest();}  },
     };
     
     std::string theCmd(argv[1]);

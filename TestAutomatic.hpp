@@ -770,6 +770,59 @@ class TestAutomatic {
         return theResult;
     }
 
+    bool doAlterTest(){
+
+        std::stringstream theStream1;
+        std::string  theDBName("db_" + std::to_string(rand() % 9999));
+        theStream1 << "create database " << theDBName << ";\n";
+        theStream1 << "use " << theDBName << ";\n";
+
+        addUsersTable(theStream1);
+        insertUsers(theStream1, 0, 10);
+        std::string theTrue = std::string("True");
+        // theStream1 << getUserSelect({});  // basic
+        // theStream1 << getUserSelect({" order by zipcode", " where zipcode>92122", " limit 3"});
+        // theStream1 << "select first_name, last_name, age from Users order by last_name where age>60;\n";
+        theStream1 << "alter table Users add NonVeg varchar(10)\n";
+        theStream1 <<"UPDATE Users set NonVeg="<< theTrue <<" where id = 1\n"; 
+        theStream1 << "show tables;\n";
+        theStream1 << "dump database " << theDBName << ";\n";
+        theStream1 << "drop database " << theDBName << ";\n";
+
+        std::string       temp(theStream1.str());
+        std::stringstream theInput(temp);
+        std::stringstream theOutput;
+        bool              theResult = doScriptTest(theInput, theOutput);
+        if (theResult) {
+            std::string tempStr = theOutput.str();
+            output << "output \n"
+                   << tempStr << "\n";
+            // std::cout << tempStr << "\n";
+
+            Responses theResponses;
+            auto      theCount = analyzeOutput(theOutput, theResponses);
+
+            Expected  theExpected({
+                {Commands::createDB, 1},
+                {Commands::useDB, 0},
+                {Commands::createTable, 1},
+                {Commands::insert, 10},
+                {Commands::select, 10},
+                {Commands::select, 3},
+                {Commands::select, 6},
+                {Commands::showTables, 1},
+                {Commands::dumpDB, 3, '>'},
+                {Commands::dropDB, 0},
+            });
+
+            if (!theCount || !(theExpected == theResponses)) {
+                theResult = false;
+            }
+        }
+        return theResult;
+
+    }
+
     bool doSelectTest() {
         std::stringstream theStream1;
         std::string       theDBName("db_" + std::to_string(rand() % 9999));

@@ -80,7 +80,7 @@ bool UpdateTableStatement::checkUpdateTable(Tokenizer aTokenizer) {
         Token theIdentifier = aTokenizer.current();
         Token theEqualOpr = aTokenizer.peek(1);
         Token theData = aTokenizer.peek(2);
-        if (theIdentifier.type != TokenType::identifier || theEqualOpr.data != "=" || (theData.type != TokenType::number && theData.type != TokenType::string && theData.type != TokenType::timedate)) {
+        if (theIdentifier.type != TokenType::identifier || theEqualOpr.data != "=" || (theData.type != TokenType::number && theData.type != TokenType::string && theData.type != TokenType::timedate && theData.type != TokenType::keyword)) {
             return false;
         }
         aTokenizer.next(3);

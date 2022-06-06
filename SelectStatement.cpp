@@ -174,7 +174,7 @@ StatusResult SelectStatement::parseSelect(Tokenizer &aTokenizer) {
     }
 
     // Means we have atleast one field
-    while (aTokenizer.peek(1).keyword != Keywords::from_kw || (aTokenizer.peek(1).data == "." && aTokenizer.peek(3).keyword != Keywords::from_kw)) {
+    while (aTokenizer.peek(1).keyword != Keywords::from_kw || (aTokenizer.peek(1).data == "." && aTokenizer.peek(3).keyword != Keywords::from_kw) || (aTokenizer.peek(1).data == "(" && aTokenizer.peek(4).keyword != Keywords::from_kw)) {
         // this->theDBQuery.setAttr(aTokenizer.current().data);
         if (aTokenizer.peek(1).data == ".") {
             std::string thetableName = aTokenizer.current().data;
@@ -184,7 +184,18 @@ StatusResult SelectStatement::parseSelect(Tokenizer &aTokenizer) {
             this->theDBQuery.setAttr(thefieldName);
             selectField theField(theTableName, thefieldName);
             this->theDBQuery.setFilterStruct(theField);
-        } else {
+        } else if(aTokenizer.peek(1).data == "("){
+            std::string theAggrFunc = aTokenizer.current().data;
+            aTokenizer.next(2);
+            std::string theField = aTokenizer.current().data;
+            if(aTokenizer.peek(2).data == ","){
+                aTokenizer.next();
+            }
+            std::string theNewField = theAggrFunc + "(" + theField + ")";
+            this->theDBQuery.setAttr(theNewField);
+            bool theGroupBy = true;
+            this->theDBQuery.setGroupBy(theGroupBy,theAggrFunc, theField);
+        }else {
             std::string thefieldName = aTokenizer.current().data;
             std::string theTbName = theDefaultTableName;
             bool        left = false;

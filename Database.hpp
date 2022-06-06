@@ -36,10 +36,11 @@
 #include "ShowsTablesView.hpp"
 #include "Storage.hpp"
 #include "UpdateTableStatement.hpp"
+#include "AlterTableStatement.hpp"
 
 namespace ECE141 {
 class CreateTableStatement;
-
+class AlterTableStatement;
 class Database {
    public:
     Database(const std::string aName, CreateDB);
@@ -76,6 +77,7 @@ class Database {
     StatusResult                     dropTable(DropTableStatement *aStmt, std::ostream &anOutput);
     StatusResult                     indexTable(IndexTableStatement *aStmt, std::ostream &anOutput);
     StatusResult                     indexsTable(IndexsTableStatement *aStmt, std::ostream &anOutput);
+    StatusResult                     alterTable(AlterTableStatement *aStmt, std::ostream &anOutput);
     StatusResult                     showQuery(SelectStatement *aStmt, std::ostream &anOutput);
     StatusResult                     showJoinQuery(DBQuery &aDB, Entity &anEntity, std::ostream &anOutput);
     void                             setEntityIndexMap(const std::string &aName, const uint32_t &aBlocNum);

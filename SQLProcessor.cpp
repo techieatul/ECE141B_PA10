@@ -71,6 +71,7 @@ std::map<Keywords, recognizeVisitor> theRecognizemap{
     {Keywords::select_kw, SelectStatement::checkSelectTable},
     {Keywords::update_kw, UpdateTableStatement::checkUpdateTable},
     {Keywords::delete_kw, DeleteRowStatement::checkDeleteRow},
+    {Keywords::alter_kw, AlterTableStatement::checkAlterTable},
 
 };
 
@@ -86,6 +87,7 @@ std::map<Keywords, SQLStmtFactory> theSQLStatementMap{
     {Keywords::drop_kw, DropTableStatement::dropTableStatement},
     {Keywords::index_kw, IndexTableStatement::indexTableStatement},
     {Keywords::indexes_kw, IndexsTableStatement::indexsTableStatement},
+    {Keywords::alter_kw, AlterTableStatement::alterTableStatement},
 
 };
 
